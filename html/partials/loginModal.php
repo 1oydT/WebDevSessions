@@ -24,7 +24,6 @@
                     </div>
                 </div>
                 <div id="login-invalid-feedback" class="invalid-feedback" style="display: none;">
-                    Invalid email or password.
                 </div>
                 <div class="d-grid">
                     <button type="submit" class="btn btn-primary">Login</button>

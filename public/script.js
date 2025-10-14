@@ -1,6 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
 
-    // --- Overview Modal ---
+  // --- Overview Modal ---
   const overviewModal = document.getElementById("overviewModal");
   const overviewModalLabel = document.getElementById("overviewModalLabel");
   const overviewCarouselInner = document.getElementById("overview-carousel-inner");
@@ -20,21 +20,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const checkoutModalFooter = document.getElementById("checkout-modal-footer");
   const thankyouConfirmBtn = document.getElementById("thankyou-confirm-btn");
 
-  // const fieldValidators = {
-  //   'checkout-email': validateEmail,
-  //   'card-number': validateCardNumber,
-  //   'card-expiry': validateExpiry,
-  //   'card-cvc': validateCVC,
-  //   'card-name': validateTextInput
-  // };
-
   const savedCart = localStorage.getItem("cart");
   const cart = savedCart ? JSON.parse(savedCart) : [];
 
+  let productData = {};
+  let genresList = [];
   let currentGenre = "all";
-  let currentSort = "az"; // default
+  let currentSort = "az";
   const sortSelect = document.getElementById("product-sort");
-  
+
   /*
   // Render featured games on load and when navigating to Home
   document.querySelector('a[href="/"]').addEventListener("click", () => {
@@ -53,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // fade out weeeeee
   //const navLinks = document.querySelectorAll("a[href]"); for all stuff even not nav
   const navLinks = document.querySelectorAll("nav a[href]");
-  
+
   navLinks.forEach(link => {
     link.addEventListener("click", event => {
       const targetUrl = link.getAttribute("href");
@@ -79,117 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // --- Product Data ---
-  const productData = {
-    "until-youre-mine": {
-      name: "Until You're Mine",
-      price: 225,
-      genre: "Visual Novel",
-      description: "A gripping visual novel about choices and consequences.",
-      images: [
-        `${BASE_URL}/public/assets/uym.png`,
-        `${BASE_URL}/public/assets/uym1.png`,
-        `${BASE_URL}/public/assets/uym2.png`,
-        `${BASE_URL}/public/assets/uym3.png`,
-        `${BASE_URL}/public/assets/uym4.png`,
-        `${BASE_URL}/public/assets/uym5.png`
-      ]
-    },
-    "gta": {
-      name: "Grand Theft Auto",
-      price: 350,
-      genre: "Open-World",
-      description: "Grand Theft Auto V Enhanced, best game.",
-      images: [
-        `${BASE_URL}/public/assets/gta.webp`,
-        `${BASE_URL}/public/assets/gta1.jpg`,
-        `${BASE_URL}/public/assets/gta2.jpg`,
-        `${BASE_URL}/public/assets/gta3.jpg`,
-        `${BASE_URL}/public/assets/gta4.jpg`,
-        `${BASE_URL}/public/assets/gta5.jpg`,
-      ]
-    },
-    "peak": {
-      name: "Peak",
-      price: 185,
-      genre: "Exploration",
-      description: "Reach the peak!!!",
-      images: [
-        `${BASE_URL}/public/assets/peak.webp`,
-        `${BASE_URL}/public/assets/peak1.png`,
-        `${BASE_URL}/public/assets/peak2.png`,
-        `${BASE_URL}/public/assets/peak3.png`,
-        `${BASE_URL}/public/assets/peak4.png`,
-        `${BASE_URL}/public/assets/peak5.png`
-      ]
-    },
-    "summertime-saga": {
-      name: "Summertime Saga",
-      price: 550,
-      genre: "Visual Novel",
-      description: "A coming-of-age dating sim with a twist.",
-      images: [
-        `${BASE_URL}/public/assets/sts.png`,
-        `${BASE_URL}/public/assets/sts1.jpg`,
-        `${BASE_URL}/public/assets/sts2.jpg`,
-        `${BASE_URL}/public/assets/sts3.webp`
-      ]
-    },
-    "god-of-war": {
-      name: "God of War",
-      price: 565,
-      genre: "Action",
-      description: "Epic battles and mythological adventures in God of War.",
-      images: [
-        `${BASE_URL}/public/assets/gow.jpg`,
-        `${BASE_URL}/public/assets/gow1.jpg`,
-        `${BASE_URL}/public/assets/gow2.jpg`,
-        `${BASE_URL}/public/assets/gow3.jpg`,
-        `${BASE_URL}/public/assets/gow4.jpg`,
-        `${BASE_URL}/public/assets/gow5.jpg`,
-      ]
-    },
-    "Songsilk": {
-      name: "Songsilk",
-      price: 340,
-      genre: "Metroidvania",
-      description: "The long awaited Knight Hollow Songsilk.",
-      images: [
-        `${BASE_URL}/public/assets/silksong.jpg`,
-        `${BASE_URL}/public/assets/silksong1.webp`,
-        `${BASE_URL}/public/assets/silksong2.jpg`,
-        `${BASE_URL}/public/assets/silksong3.jpg`,
-        `${BASE_URL}/public/assets/silksong4.jpg`
-      ]
-    },
-    "conter-strik": {
-      name: "Conter Strik",
-      price: 150,
-      genre: "FPS",
-      description: "Hello am 48 year man from somalia. Sorry for my bed england. I selled my wife for internet connection for play \"conter strik\" and i want to become the goodest player like you I play with 400 ping on brazil and i am global elite 2. pls no copy pasterio my story",
-      images: [
-        `${BASE_URL}/public/assets/cs.jpg`,
-        `${BASE_URL}/public/assets/cs1.jpg`,
-        `${BASE_URL}/public/assets/cs2.jpg`,
-        `${BASE_URL}/public/assets/cs3.jpg`
-      ]
-    },
-    "ddlc": {
-      name: "Doki Doki Literature Club",
-      price: 200,
-      genre: "Visual Novel",
-      description: "You kind of left her hanging this morning, you know?",
-      images: [
-        `${BASE_URL}/public/assets/ddlc.png`,
-        `${BASE_URL}/public/assets/ddlc1.jpg`,
-        `${BASE_URL}/public/assets/ddlc2.jpg`,
-        `${BASE_URL}/public/assets/ddlc3.jpg`,
-        `${BASE_URL}/public/assets/ddlc4.jpg`,
-        `${BASE_URL}/public/assets/ddlc5.jpg`
-      ]
-    }
-  };
-
   // Add Sort dropdown listener
   if (sortSelect) {
     sortSelect.addEventListener("change", () => {
@@ -198,7 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  $.validator.addMethod("textInput", function(value, element, maxLength) {
+  $.validator.addMethod("textInput", function (value, element, maxLength) {
     const trimmed = value.trim();
     if (!trimmed) return false;
     if (!/[a-zA-Z0-9]/.test(trimmed)) return false;
@@ -206,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return true;
   }, "Invalid input.");
 
-  $.validator.addMethod("customEmail", function(value, element) {
+  $.validator.addMethod("customEmail", function (value, element) {
     value = value.trim();
     if (!value) return false;
 
@@ -235,41 +118,41 @@ document.addEventListener("DOMContentLoaded", () => {
   }, "This field cannot be empty.");
 
   // Contact number
-  $.validator.addMethod("contactNumber", function(value, element) {
+  $.validator.addMethod("contactNumber", function (value, element) {
     value = value.trim();
     return this.optional(element) || /^\d{6,19}$/.test(value);
   }, "Please enter a valid contact number (6-19 digits).");
 
-  $.validator.addMethod("strongPassword", function(value, element) {
-      // At least 8 characters
-      if (value.length < 8) return false;
+  $.validator.addMethod("strongPassword", function (value, element) {
+    // At least 8 characters
+    if (value.length < 8) return false;
 
-      // At least 1 lowercase letter
-      if (!/[a-z]/.test(value)) return false;
+    // At least 1 lowercase letter
+    if (!/[a-z]/.test(value)) return false;
 
-      // At least 1 uppercase letter
-      if (!/[A-Z]/.test(value)) return false;
+    // At least 1 uppercase letter
+    if (!/[A-Z]/.test(value)) return false;
 
-      // At least 1 number
-      if (!/[0-9]/.test(value)) return false;
+    // At least 1 number
+    if (!/[0-9]/.test(value)) return false;
 
-      // At least 1 special character
-      if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) return false;
+    // At least 1 special character
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(value)) return false;
 
-      return true;
+    return true;
   }, "Password must be at least 8 characters, with uppercase, lowercase, number, and special character.");
 
-  $.validator.addMethod("passwordMatch", function(value, element, param) {
-    const passwordVal = $(param).val().trim(); 
+  $.validator.addMethod("passwordMatch", function (value, element, param) {
+    const passwordVal = $(param).val().trim();
     return value.trim() === passwordVal && value.trim().length > 0;
   }, "Passwords do not match.");
 
-  $.validator.addMethod("cardNumber", function(value, element) {
+  $.validator.addMethod("cardNumber", function (value, element) {
     const digits = value.replace(/\s+/g, "");
     return this.optional(element) || /^\d{16,19}$/.test(digits);
   }, "Invalid card number (16-19 digits).");
 
-  $.validator.addMethod("cardExpiry", function(value, element) {
+  $.validator.addMethod("cardExpiry", function (value, element) {
     if (!/^\d{2}\/\d{2}$/.test(value)) return false;
     const [mm, yy] = value.split("/").map(Number);
     if (mm < 1 || mm > 12) return false;
@@ -279,16 +162,18 @@ document.addEventListener("DOMContentLoaded", () => {
     return expiry > now;
   }, "Invalid expiry date.");
 
-  $.validator.addMethod("cardCVC", function(value, element) {
+  $.validator.addMethod("cardCVC", function (value, element) {
     return this.optional(element) || /^\d{3,4}$/.test(value);
   }, "Invalid CVC.");
 
-  $.validator.addMethod("paymentSelected", function(value, element) {
+  $.validator.addMethod("paymentSelected", function (value, element) {
     return $('input[name="payment-method"]:checked').length > 0;
   }, "Please select a payment method.");
 
 
   renderCart();
+  fetchProducts();
+  fetchGenres();
   renderProductCategories();
   renderProductsSection();
   renderFeaturedGames();
@@ -299,10 +184,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setupCheckoutSummary();
   setupPasswordToggles();
 
-  /*
-  setupCheckoutActions();
-
-  */
 
 
   // resetModalForm('#loginModal');
@@ -341,25 +222,25 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderFeaturedGames() {
     const featuredDiv = document.getElementById('featured-games');
     if (!featuredDiv) return;
-    const products = getAllProducts();
+    const products = Object.entries(productData).map(([id, p]) => ({ ...p, id }));
     if (products.length === 0) {
       featuredDiv.innerHTML = '<p>No games available.</p>';
       return;
     }
     const featured = pickRandom(products, Math.min(3, products.length));
     featuredDiv.innerHTML = featured.map(game => `
-      <div class="col-md-4">
-        <div class="card h-100">
-          <div class="ratio ratio-1x1">
-            <img src="${game.img}" class="card-img-top object-fit-cover rounded" alt="${game.name}">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">${game.name}</h5>
-            <p class="card-text">₱${game.price}</p>
-          </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="ratio ratio-1x1">
+          <img src="${game.images[0]}" class="card-img-top object-fit-cover rounded" alt="${game.name}">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">${game.name}</h5>
+          <p class="card-text">₱${game.price}</p>
         </div>
       </div>
-    `).join('');
+    </div>
+  `).join('');
   }
 
   // pick n random items from array ---
@@ -474,17 +355,18 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderProductCategories() {
     const categoriesDiv = document.getElementById('product-categories');
     if (!categoriesDiv) return;
-    const genres = Array.from(new Set(Object.values(productData).map(p => p.genre))).sort();
+
     categoriesDiv.innerHTML = `
-      <div class="d-inline-flex flex-wrap gap-2 justify-content-center">
-        <button class="btn btn-outline-primary btn-sm category-btn active" data-genre="all">All</button>
-        ${genres.map(genre =>
-          `<button class="btn btn-outline-primary btn-sm category-btn" data-genre="${genre}">${genre}</button>`
-        ).join('')}
-      </div>
-    `;
+    <div class="d-inline-flex flex-wrap gap-2 justify-content-center">
+      <button class="btn btn-outline-primary btn-sm category-btn active" data-genre="all">All</button>
+      ${genresList.map(g =>
+      `<button class="btn btn-outline-primary btn-sm category-btn" data-genre="${g}">${g}</button>`
+    ).join('')}
+    </div>
+  `;
+
     categoriesDiv.querySelectorAll('.category-btn').forEach(btn => {
-      btn.addEventListener('click', function () {
+      btn.addEventListener('click', () => {
         categoriesDiv.querySelectorAll('.category-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         currentGenre = btn.getAttribute('data-genre');
@@ -499,12 +381,17 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let entries = Object.entries(productData);
 
-    // filter by genre
-    if (filterGenre && filterGenre !== "all") {
-      entries = entries.filter(([id, data]) => data.genre === filterGenre);
+    // Filter
+    if (filterGenre !== "all") {
+      entries = entries.filter(([id, data]) => {
+        if (Array.isArray(data.genres)) {
+          return data.genres.includes(filterGenre);
+        }
+        return false;
+      });
     }
 
-    // sort logic
+    // Sort
     entries.sort(([, a], [, b]) => {
       switch (sortBy) {
         case "az": return a.name.localeCompare(b.name);
@@ -515,22 +402,22 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
 
-    // render cards
+    // Render cards
     productsList.innerHTML = entries.map(([id, data]) => `
-      <div class="col-md-4">
-        <div class="card h-100">
-          <div class="ratio ratio-1x1">
-            <img src="${data.images[0]}" class="card-img-top object-fit-cover rounded" alt="${data.name}">
-          </div>
-          <div class="card-body">
-            <h5 class="card-title">${data.name}</h5>
-            <p class="card-text">₱${data.price}</p>
-            <a href="/" class="btn btn-primary w-100 overview-btn" data-product-id="${id}">Overview</a>
-            <a href="/" class="btn btn-secondary w-100 add-to-cart" data-product-id="${id}">Add to Cart</a>
-          </div>
+    <div class="col-md-4">
+      <div class="card h-100">
+        <div class="ratio ratio-1x1">
+          <img src="${data.images[0]}" class="card-img-top object-fit-cover rounded" alt="${data.name}">
+        </div>
+        <div class="card-body">
+          <h5 class="card-title">${data.name}</h5>
+          <p class="card-text">₱${data.price}</p>
+          <a href="/" class="btn btn-primary w-100 overview-btn" data-product-id="${id}">Overview</a>
+          <a href="/" class="btn btn-secondary w-100 add-to-cart" data-product-id="${id}">Add to Cart</a>
         </div>
       </div>
-    `).join('');
+    </div>
+  `).join('');
 
     attachProductEventListeners();
     attachOverviewModalListeners();
@@ -617,7 +504,7 @@ document.addEventListener("DOMContentLoaded", () => {
           try {
             const carousel = bootstrap.Carousel.getOrCreateInstance(document.getElementById("overviewCarousel"));
             carousel.to(0);
-          } catch {}
+          } catch { }
         }
 
         // Genre, Description, Price
@@ -659,12 +546,50 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  function getAllProducts() {
-    return Object.entries(productData).map(([id, data]) => ({
-      name: data.name,
-      price: data.price,
-      img: data.images[0]
-    }));
+  function fetchGenres() {
+    return $.ajax({
+      url: `${BASE_URL}/api/get_genres.php`,
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          genresList = response.genres || [];
+          renderProductCategories();
+        } else {
+          console.error("Failed to fetch genres:", response.error);
+          showAlert("Failed to load genres. See console for details.", "danger");
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error("AJAX error (genres):", textStatus, errorThrown);
+        console.error("Response:", jqXHR.responseText);
+        showAlert("An error occurred while loading genres.", "danger");
+      }
+    });
+  }
+
+  function fetchProducts() {
+    $.ajax({
+      url: `${BASE_URL}/api/get_products.php`,
+      type: 'GET',
+      dataType: 'json',
+      success: function (response) {
+        if (response.success) {
+          productData = response.products;
+          renderProductsSection();
+          renderFeaturedGames();
+        } else {
+          console.error("Failed to fetch products:", response.message);
+          showAlert("Failed to load products. See console for details.", "danger");
+        }
+      },
+      error: function (jqXHR, textStatus, errorThrown) {
+        console.error("AJAX error:", textStatus, errorThrown);
+        console.error("Status code:", jqXHR.status);
+        console.error("Response text:", jqXHR.responseText);
+        showAlert("An error occurred while loading products. This shouldn't happen.", "danger");
+      }
+    });
   }
 
   function setupLoginForm() {
@@ -675,8 +600,8 @@ document.addEventListener("DOMContentLoaded", () => {
     restrictToEmail($email);
 
     $form.validate({
-      onkeyup: function(element) { $(element).valid(); },  
-      onfocusout: function(element) { $(element).valid(); },
+      onkeyup: function (element) { $(element).valid(); $invalid.hide(); },
+      onfocusout: function (element) { $(element).valid(); },
       rules: {
         'login-email': {
           required: true,
@@ -696,26 +621,43 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       errorClass: "is-invalid",
       validClass: "is-valid",
-      errorPlacement: function(error, element) {
+      errorPlacement: function (error, element) {
         const $feedback = $('#' + element.attr('id') + '-feedback');
         if ($feedback.length) $feedback.text(error.text());
       },
-      highlight: function(element) {
+      highlight: function (element) {
         $(element).addClass('is-invalid').removeClass('is-valid');
-        //$invalid.show();
       },
-      unhighlight: function(element) {
+      unhighlight: function (element) {
         $(element).removeClass('is-invalid').addClass('is-valid');
         const $feedback = $('#' + element.id + '-feedback');
         if ($feedback.length) $feedback.text('');
-        //if ($form.valid()) $invalid.hide();
       },
-      submitHandler: function(form) {
-        console.log('Login success:', {
-          email: $('#login-email').val(),
-          password: $('#login-password').val()
+      submitHandler: function (form) {
+        $.ajax({
+          url: `${BASE_URL}/api/login_submit.php`,
+          type: 'POST',
+          data: $(form).serialize(),
+          dataType: 'json',
+          success: function (response) {
+            if (response.success) {
+              $invalid.hide();
+              $('#login-email, #login-password').removeClass('is-invalid');
+              showAlert("Successfully logged in as user: " + response.name + "\nid: " + response.id, "success", 10000);
+              bootstrap.Modal.getInstance(document.getElementById('loginModal'))?.hide();
+            } else {
+              console.log(response.message);
+              $invalid.show().text('Invalid email or password.');
+              $('#login-email, #login-password').addClass('is-invalid').removeClass('is-valid').val('');
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error("AJAX error:", textStatus, errorThrown);
+            console.error("Status code:", jqXHR.status);
+            console.error("Response text:", jqXHR.responseText);
+            showAlert("An unexpected error occurred. This shouldn't happen.", "danger");
+          }
         });
-        bootstrap.Modal.getInstance(document.getElementById('loginModal'))?.hide();
       }
     });
   }
@@ -733,8 +675,8 @@ document.addEventListener("DOMContentLoaded", () => {
     restrictToDigits($contact);
 
     $form.validate({
-      onkeyup: function(element) { $(element).valid(); },  
-      onfocusout: function(element) { $(element).valid(); },
+      onkeyup: function (element) { $(element).valid(); },
+      onfocusout: function (element) { $(element).valid(); },
       rules: {
         'signup-name': {
           required: true,
@@ -783,27 +725,40 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       errorClass: "is-invalid",
       validClass: "is-valid",
-      errorPlacement: function(error, element) {
+      errorPlacement: function (error, element) {
         const $feedback = $('#' + element.attr('id') + '-feedback');
         if ($feedback.length) $feedback.text(error.text());
       },
-      highlight: function(element) {
+      highlight: function (element) {
         $(element).addClass('is-invalid').removeClass('is-valid');
       },
-      unhighlight: function(element) {
+      unhighlight: function (element) {
         $(element).removeClass('is-invalid').addClass('is-valid');
         const $feedback = $('#' + element.id + '-feedback');
         if ($feedback.length) $feedback.text('');
       },
-      submitHandler: function(form) {
-        console.log('Signup success:', {
-          name: $name.val(),
-          email: $email.val(),
-          address: $address.val(),
-          contact: $contact.val(),
-          password: $password.val()
+      submitHandler: function (form) {
+        $.ajax({
+          type: "POST",
+          url: BASE_URL + "/api/signup_submit.php",
+          data: $(form).serialize(),
+          dataType: "json",
+          success: function (response) {
+            if (response.success) {
+              showAlert(response.message, "success");
+              bootstrap.Modal.getInstance(document.getElementById('signupModal'))?.hide();
+            } else {
+              showAlert(response.message, "danger");
+              $email.trigger(focus).val('');
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error("AJAX error:", textStatus, errorThrown);
+            console.error("Status code:", jqXHR.status);
+            console.error("Response text:", jqXHR.responseText);
+            showAlert("An unexpected error occurred. This shouldn't happen.", "danger");
+          }
         });
-        bootstrap.Modal.getInstance(document.getElementById('signupModal'))?.hide();
       }
     });
   }
@@ -815,8 +770,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const $modalFooter = $('#checkout-modal-footer');
 
     $form.validate({
-      onkeyup: function(element) { $(element).valid(); },
-      onfocusout: function(element) { $(element).valid(); },
+      onkeyup: function (element) { $(element).valid(); },
+      onfocusout: function (element) { $(element).valid(); },
       rules: {
         'checkout-email': {
           required: true,
@@ -826,19 +781,19 @@ document.addEventListener("DOMContentLoaded", () => {
           paymentSelected: true
         },
         'card-number': {
-          required: function() { return $('input[name="payment-method"]:checked').val() === 'card'; },
+          required: function () { return $('input[name="payment-method"]:checked').val() === 'card'; },
           cardNumber: true
         },
         'card-expiry': {
-          required: function() { return $('input[name="payment-method"]:checked').val() === 'card'; },
+          required: function () { return $('input[name="payment-method"]:checked').val() === 'card'; },
           cardExpiry: true
         },
         'card-cvc': {
-          required: function() { return $('input[name="payment-method"]:checked').val() === 'card'; },
+          required: function () { return $('input[name="payment-method"]:checked').val() === 'card'; },
           cardCVC: true
         },
         'card-name': {
-          required: function() { return $('input[name="payment-method"]:checked').val() === 'card'; },
+          required: function () { return $('input[name="payment-method"]:checked').val() === 'card'; },
           textInput: 50
         }
       },
@@ -863,32 +818,32 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       },
       errorClass: "is-invalid",
-      validClass: "is-valid",  
-      errorPlacement: function(error, element) {
+      validClass: "is-valid",
+      errorPlacement: function (error, element) {
         const $feedback = $('#' + element.attr('id') + '-feedback');
         if ($feedback.length) $feedback.text(error.text());
-      
+
         if (element.attr('name') === 'payment-method') {
           $('#payment-method-feedback').show().text(error.text());
         }
       },
-      highlight: function(element) {
-      $(element).removeClass('is-valid');
+      highlight: function (element) {
+        $(element).removeClass('is-valid');
         if ($(element).attr('name') !== 'payment-method') {
-            $(element).addClass('is-invalid');
+          $(element).addClass('is-invalid');
         }
         if ($(element).attr('name') === 'payment-method') $('#payment-method-feedback').show();
       },
-      unhighlight: function(element) {
+      unhighlight: function (element) {
         $(element).removeClass('is-invalid');
         if ($(element).attr('name') !== 'payment-method') {
-            $(element).addClass('is-valid');
+          $(element).addClass('is-valid');
         }
         const $feedback = $('#' + element.id + '-feedback');
         if ($feedback.length) $feedback.text('');
         if ($(element).attr('name') === 'payment-method') $('#payment-method-feedback').hide();
       },
-      submitHandler: function(form) {
+      submitHandler: function (form) {
         console.log('✅ Checkout successful');
         $form.hide();
         if ($modalFooter.length) $modalFooter.hide();
@@ -898,7 +853,7 @@ document.addEventListener("DOMContentLoaded", () => {
         updateCheckoutButton();
         $confirm.prop('disabled', true);
         //bootstrap.Modal.getInstance(document.getElementById('checkoutModal'))?.hide();
-        }
+      }
     });
 
     // Toggle card fields visibility
@@ -940,8 +895,8 @@ document.addEventListener("DOMContentLoaded", () => {
     restrictToEmail($email);
 
     $form.validate({
-      onkeyup: function(element) { $(element).valid(); },
-      onfocusout: function(element) { $(element).valid(); },
+      onkeyup: function (element) { $(element).valid(); },
+      onfocusout: function (element) { $(element).valid(); },
       rules: {
         'contact-name': {
           required: true,
@@ -969,30 +924,45 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       errorClass: "is-invalid",
       validClass: "is-valid",
-      errorPlacement: function(error, element) {
+      errorPlacement: function (error, element) {
         const $feedback = $('#' + element.attr('id') + '-feedback');
         if ($feedback.length) $feedback.text(error.text());
       },
-      highlight: function(element) {
+      highlight: function (element) {
         $(element).addClass('is-invalid').removeClass('is-valid');
       },
-      unhighlight: function(element) {
+      unhighlight: function (element) {
         $(element).removeClass('is-invalid').addClass('is-valid');
         const $feedback = $('#' + element.id + '-feedback');
         if ($feedback.length) $feedback.text('');
       },
-      submitHandler: function(form) {
-        showAlert("Your message has been sent!", "success");
-        $success.removeClass('d-none');
+      submitHandler: function (form) {
+        $.ajax({
+          type: "POST",
+          url: BASE_URL + "/api/contact_submit.php",
+          data: $(form).serialize(),
+          dataType: "json",
+          success: function (response) {
+            if (response.success) {
+              showAlert(response.message, "success");
+              form.reset();
+              $(form).find(".is-valid").removeClass("is-valid");
 
-        form.reset();
-        $name.removeClass('is-invalid');
-        $email.removeClass('is-invalid');
-        $message.removeClass('is-invalid');
-
-        setTimeout(() => {
-          $success.addClass('d-none');
-        }, 3000);
+              $success.removeClass('d-none');
+              setTimeout(() => {
+                $success.addClass('d-none');
+              }, 3000);
+            } else {
+              showAlert(response.message, "danger");
+            }
+          },
+          error: function (jqXHR, textStatus, errorThrown) {
+            console.error("AJAX error:", textStatus, errorThrown);
+            console.error("Status code:", jqXHR.status);
+            console.error("Response text:", jqXHR.responseText);
+            showAlert("An unexpected error occurred. This shouldn't happen.", "danger");
+          }
+        });
       }
     });
   }
@@ -1131,375 +1101,5 @@ document.addEventListener("DOMContentLoaded", () => {
       alertDiv.classList.add("alert-exit-active");
     });
   }
-
-  /* hide legacy validations, will reuse if may mali sa jquery validations
-
-  function setupLoginForm() {
-    const $form = $('#login-form');
-    const $email = $('#login-email');
-    const $password = $('#login-password');
-    const $invalid = $('#login-invalid-feedback');
-
-    restrictToEmail($email);
-
-    $email.on('input blur', () => validateField($email, validateEmail));
-    $password.on('input blur', () => validateField($password, validateNotEmpty));
-
-    $form.on('submit', function (e) {
-      e.preventDefault();
-      const emailOk = validateField($email, validateEmail);
-      const passOk = validateField($password, validateNotEmpty);
-
-      if (!emailOk || !passOk) {
-        $invalid.show();
-        $email.addClass('is-invalid');
-        $password.addClass('is-invalid');
-        return;
-      }
-
-      $invalid.hide();
-      console.log('Login success:', { email: $email.val(), password: $password.val() });
-      bootstrap.Modal.getInstance(document.getElementById('loginModal'))?.hide();
-    });
-  }
-
-  function setupSignupForm() {
-    const $form = $('#signup-form');
-    const $name = $('#signup-name');
-    const $email = $('#signup-email');
-    const $address = $('#signup-address');
-    const $contact = $('#signup-contact');
-    const $password = $('#signup-password');
-    const $confirm = $('#signup-confirm');
-
-    restrictToEmail($email);
-
-    restrictToDigits($contact);
-
-    $name.on('input blur', () => validateField($name, validateTextInput, 30));
-    $email.on('input blur', () => validateField($email, validateEmail));
-    $address.on('input blur', () => validateField($address, validateTextInput, 50));
-    $contact.on('input blur', () => validateField($contact, validateContact));
-    $password.on('input blur', () => {validateField($password, validateNotEmpty), validateField($confirm, val => val === $.trim($password.val()) && val.length > 0)});
-    $confirm.on('input blur', () =>
-      validateField($confirm, val => val === $.trim($password.val()) && val.length > 0)
-    );
-
-    $form.on('submit', function (e) {
-      e.preventDefault();
-
-      const valid =
-        validateField($name, validateTextInput, 30) &&
-        validateField($email, validateEmail) &&
-        validateField($address, validateTextInput, 50) &&
-        validateField($contact, validateContact) &&
-        validateField($password, validateNotEmpty) &&
-        validateField($confirm, val => val === $.trim($password.val()) && val.length > 0);
-
-      if (!valid) return;
-
-      console.log('Signup success:', {
-        name: $name.val(),
-        email: $email.val(),
-        address: $address.val(),
-        contact: $contact.val(),
-        password: $password.val()
-      });
-      bootstrap.Modal.getInstance(document.getElementById('signupModal'))?.hide();
-    });
-  }
-
-  function setupContactForm() {
-    const $form = $('#contact-form');
-    const $name = $('#contact-name');
-    const $email = $('#contact-email');
-    const $message = $('#contact-message');
-    const $success = $('#contact-success');
-
-    if (!$form.length) return;
-
-    restrictToEmail($email);
-
-    $name.on('input blur', () => {
-      const val = $name.val();
-      const $feedback = $('#name-feedback');
-      if (val.trim().length === 0) {
-        $feedback.text('Please enter your name.');
-        $name.addClass('is-invalid');
-      } else if (val.trim().length > 31) {
-        $feedback.text('Name must be less than or equal to 30 characters.');
-        $name.addClass('is-invalid');
-      } else if (!validateTextInput($name.val())) {
-        $feedback.text('Please enter your name.');
-        $name.addClass('is-invalid');
-        valid = false;
-      } else {
-        $name.removeClass('is-invalid');
-      }
-    });
-
-    $email.on('input blur', () => {
-      if (validateEmail($email.val())) {
-        $email.removeClass('is-invalid');
-      } else {
-        $email.addClass('is-invalid');
-      }
-    });
-
-    $message.on('input blur', () => {
-      const val = $message.val();
-      const $feedback = $('#message-feedback');
-      if (val.trim().length === 0) {
-        $feedback.text('Please enter your message.');
-        $message.addClass('is-invalid');
-      } else if (val.trim().length >= 1000) {
-        $feedback.text('Message must be less than 1,000 characters.');
-        $message.addClass('is-invalid');
-      } else if (!validateTextInput($message.val())) {
-        $feedback.text('Please enter your message.');
-        $message.addClass('is-invalid');
-        valid = false;
-      } else {
-        $message.removeClass('is-invalid');
-      }
-    });
-
-    $form.on('submit', function (e) {
-      e.preventDefault();
-      let valid = true;
-
-      if (!validateTextInput($name.val())) {
-        $name.addClass('is-invalid');
-        valid = false;
-      } else {
-        $name.removeClass('is-invalid');
-      }
-
-      if (!validateEmail($email.val())) {
-        $email.addClass('is-invalid');
-        valid = false;
-      } else {
-        $email.removeClass('is-invalid');
-      }
-
-      if (!validateTextInput($message.val())) {
-        $message.addClass('is-invalid');
-        valid = false;
-      } else {
-        $message.removeClass('is-invalid');
-      }
-
-      if (!valid) return;
-
-      // Success
-      showAlert("Your message has been sent!", "success");
-      $success.removeClass('d-none');
-
-      $form[0].reset();
-      $name.removeClass('is-invalid');
-      $email.removeClass('is-invalid');
-      $message.removeClass('is-invalid');
-
-      setTimeout(() => {
-        $success.addClass('d-none');
-      }, 3000);
-    });
-  }
-
-  function setupCheckoutForm() {
-    const $fields = $('#checkout-form input, #checkout-form select');
-    const $confirm = $('#confirm-purchase-btn');
-    const $email = $('#checkout-email');
-
-    restrictToEmail($email);
-
-    $fields.each(function () {
-      const id = this.id;
-      const validator = fieldValidators[id];
-      if (validator) {
-        $(this).on('input change', () => validateField($(this), validator));
-      }
-    });
-
-    // Real-time validation for payment method radios
-    $('input[name="payment-method"]').on('change', () => {
-      validatePaymentMethod();
-      toggleCardFields();
-    });
-
-    // Form submit
-    $('#checkout-form').on('submit', function (e) {
-      e.preventDefault();
-      if (!validateCheckoutForm()) return;
-      console.log('✅ Checkout successful');
-      bootstrap.Modal.getInstance(document.getElementById('checkoutModal'))?.hide();
-      // TODO: clear cart, show thank you message, etc.
-    });
-
-    // Update confirm button enable state as user types
-    $fields.add('input[name="payment-method"]').on('input change', () => {
-      $confirm.prop('disabled', !validateCheckoutForm(false));
-    });
-  }
-
-  */
-
-  //if functions keep growing baka setup nlng ng new function setupCheckoutModal that keeps
-  //all checkout related funcs (easier call to ready func)
-
-  /*
-
-  function setupCheckoutActions() {
-    if (confirmPurchaseBtn) {
-      confirmPurchaseBtn.addEventListener("click", () => {
-        // Validate before processing
-        if (!validateCheckoutForm()) return;
-
-        // Show thank you message
-        if (checkoutThankyou) checkoutThankyou.style.display = "";
-        if (checkoutForm) checkoutForm.style.display = "none";
-        if (checkoutModalFooter) checkoutModalFooter.style.display = "none";
-
-        // Clear the cart
-        cart.length = 0;
-        renderCart();
-        updateCheckoutButton();
-      });
-    }
-
-    // Thank you confirmation (closes modal)
-    if (thankyouConfirmBtn) {
-      thankyouConfirmBtn.addEventListener("click", () => {
-        // Optional delay to give Bootstrap time to hide modal
-        setTimeout(() => {
-          if (checkoutThankyou) checkoutThankyou.style.display = "none";
-          if (checkoutForm) checkoutForm.style.display = "";
-          if (checkoutModalFooter) checkoutModalFooter.style.display = "";
-        }, 300);
-      });
-    }
-  }
-
-  dont change validation funcs :D nakalimutan ko jquery validation but works mostly the same
-  will refactor nalang later
-
-  function validateField($field, validator, ...args) {
-    const value = $.trim($field.val());
-    const isValid = validator(value, ...args);
-    $field.toggleClass('is-invalid', !isValid);
-    return isValid;
-  }
-
-  function validateTextInput(value, maxLength = 1000) {
-    const trimmed = value.trim();
-    if (!trimmed) return false;
-    if (!/[a-zA-Z0-9]/.test(trimmed)) return false;
-    if (trimmed.length > maxLength) return false;
-    return true;
-  }
-
-  function validateEmail(email) {
-    if (typeof email !== 'string') return false;
-    const s = email.trim();
-
-    const parts = s.split('@');
-    if (parts.length !== 2) return false;
-
-    const [local, domain] = parts;
-    if (!local || !domain) return false;
-
-    // must start and end with alphanumeric, allowed chars in middle are . _ -
-    if (!/^[A-Za-z0-9](?:[A-Za-z0-9._-]*[A-Za-z0-9])?$/.test(local)) return false;
-
-    if (!/^[A-Za-z0-9.-]+\.[A-Za-z]{2,3}$/.test(domain)) return false;
-
-    const labels = domain.split('.');
-    for (const label of labels) {
-      if (label.length === 0) return false;             // no "example..com"
-      if (!/[A-Za-z0-9]/.test(label)) return false;     // label must include alnum
-      if (/^-|-$/.test(label)) return false;            // don't start/end with hyphen
-    }
-
-    return true;
-  }
-
-  function validateNotEmpty(value) {
-    return value.trim().length > 0;
-  }
-
-  function validateContact(contact) {
-    return /^\d{6,19}$/.test(contact);
-  }
-
-  function validateCardNumber(num) {
-    // Remove spaces, check for 16-19 digits
-    const digits = num.replace(/\s+/g, "");
-    return /^\d{16,19}$/.test(digits);
-  }
-
-  function validateExpiry(exp) {
-    // MM/YY, valid month, not expired
-    if (!/^\d{2}\/\d{2}$/.test(exp)) return false;
-    const [mm, yy] = exp.split("/").map(Number);
-    if (mm < 1 || mm > 12) return false;
-    const now = new Date();
-    const year = 2000 + yy;
-    const expiry = new Date(year, mm);
-    return expiry > now;
-  }
-
-  function validateCVC(cvc) {
-    return /^\d{3,4}$/.test(cvc);
-  }
-
-  function validatePaymentMethod() {
-    const checked = $('input[name="payment-method"]:checked').val();
-    const $feedback = $('#payment-method-feedback');
-    if (!checked) {
-      $feedback.show();
-      return false;
-    }
-    $feedback.hide();
-    return true;
-  }
-
-  function toggleCardFields() {
-    const checked = $('input[name="payment-method"]:checked').val();
-    const $cardDetails = $('#card-details');
-    if (checked === 'card') {
-      $cardDetails.slideDown();
-    } else {
-      $cardDetails.slideUp();
-      // reset validation states when switching away from card
-      $('#card-number, #card-expiry, #card-cvc, #card-name').removeClass('is-invalid');
-    }
-  }
-
-  function validateCheckoutForm() {
-    let valid = true;
-
-    // Email
-    const $email = $('#checkout-email');
-    if (!validateField($email, validateEmail)) valid = false;
-
-    // Payment
-    const methodValid = validatePaymentMethod();
-    if (!methodValid) valid = false;
-
-    // Card fields if card is selected
-    const checked = $('input[name="payment-method"]:checked').val();
-    if (checked === 'card') {
-      const cardIds = ['card-number', 'card-expiry', 'card-cvc', 'card-name'];
-      cardIds.forEach(id => {
-        const $el = $('#' + id);
-        if (!validateField($el, fieldValidators[id])) valid = false;
-      });
-    }
-
-    $('#confirm-purchase-btn').prop('disabled', !valid);
-    return valid;
-  }
-
-  */
 
 });
