@@ -31,6 +31,10 @@
 
   <?php include '../partials/signupModal.php'; ?>
 
+  <?php
+    // Require authentication on this page. If not logged in, the login modal will auto-open.
+    $requireAuth = true;
+  ?>
   <?php include '../partials/script.php'; ?>
 
 </body>

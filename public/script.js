@@ -644,7 +644,19 @@ document.addEventListener("DOMContentLoaded", () => {
               $invalid.hide();
               $('#login-email, #login-password').removeClass('is-invalid');
               showAlert("Successfully logged in as user: " + response.name + "\nid: " + response.id, "success", 10000);
-              bootstrap.Modal.getInstance(document.getElementById('loginModal'))?.hide();
+              // Update client auth state so modal lock is lifted
+              if (window.AUTH) {
+                window.AUTH.loggedIn = true;
+                window.AUTH.userName = response.name || window.AUTH.userName;
+              }
+              const modalEl = document.getElementById('loginModal');
+              // Restore the close button visibility for future modal uses
+              const closeBtn = modalEl?.querySelector('[data-bs-dismiss="modal"]');
+              if (closeBtn) closeBtn.classList.remove('d-none');
+              // Now safely hide the modal (lock will not block since loggedIn=true)
+              bootstrap.Modal.getInstance(modalEl)?.hide();
+              // Refresh to re-render server-side navbar state immediately
+              setTimeout(() => { window.location.reload(); }, 100);
             } else {
               console.log(response.message);
               $invalid.show().text('Invalid email or password.');
