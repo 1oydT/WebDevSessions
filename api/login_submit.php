@@ -30,6 +30,8 @@ try {
         session_regenerate_id(true);
         $_SESSION['user_id'] = $user['id'];
         $_SESSION['user_name'] = $user['full_name'];
+        $_SESSION['user_email'] = $email;
+        $_SESSION['last_activity'] = time();
 
         // Return success JSON payload consumed by frontend
         echo json_encode([

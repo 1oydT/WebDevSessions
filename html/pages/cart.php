@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include '../partials/header.php'; ?>
+<?php
+  // Server-side protection: require login before rendering page
+  require_once __DIR__ . '/../includes/session_check.php';
+  require_login($base . '/html/pages/login.php');
+  include '../partials/header.php';
+?>
 
 <body>
   

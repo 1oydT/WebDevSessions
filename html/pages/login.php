@@ -1,14 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-  // Start a session and redirect authenticated users away from the login page
-  if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-  }
+  // Centralized session + flash helpers
+  require_once __DIR__ . '/../includes/session_check.php';
+  // Redirect authenticated users away from the login page
   if (!empty($_SESSION['user_id'])) {
     header('Location: home.php');
     exit();
   }
+  // Pull any flash error set by guards
+  $flashError = get_flash('flash_error');
   include '../partials/header.php';
 ?>
 <body>
@@ -20,7 +21,11 @@
       <div class="col-12 col-md-8 col-lg-6">
         <h1 class="mb-4 text-center">Login</h1>
 
-        <div id="login-message" class="mb-3"></div>
+        <div id="login-message" class="mb-3">
+          <?php if (!empty($flashError)): ?>
+            <div class="alert alert-danger" role="alert"><?= htmlspecialchars($flashError) ?></div>
+          <?php endif; ?>
+        </div>
 
         <form id="login-form" novalidate>
           <div class="mb-3">

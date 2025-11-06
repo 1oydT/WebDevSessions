@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
-<?php include '../partials/header.php'; ?>
+<?php
+  require_once __DIR__ . '/../includes/session_check.php';
+  include '../partials/header.php';
+?>
 
 <body>
 

@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <?php
-  // Start session and redirect authenticated users away from the signup page
-  if (session_status() !== PHP_SESSION_ACTIVE) {
-    session_start();
-  }
+  // Centralized session and timeout/flash handling
+  require_once __DIR__ . '/../includes/session_check.php';
   if (!empty($_SESSION['user_id'])) {
     header('Location: home.php');
     exit();
